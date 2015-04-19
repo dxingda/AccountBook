@@ -13,9 +13,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fad6e27-d8db-45f7-a179-342ee3dc2b64" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AccountBook.iws" />
@@ -1004,6 +1001,11 @@
       <created>1429463684514</created>
       <updated>1429463684514</updated>
     </task>
+    <task id="LOCAL-00001" summary="first modify">
+      <created>1429464340107</created>
+      <updated>1429464340107</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1054,6 +1056,8 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="first modify" />
+    <option name="LAST_COMMIT_MESSAGE" value="first modify" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
