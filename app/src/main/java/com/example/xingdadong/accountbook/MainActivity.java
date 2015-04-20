@@ -1,9 +1,14 @@
 package com.example.xingdadong.accountbook;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -14,12 +19,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new Fragment_front_test())
+                    .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
     }
 
 
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -38,7 +44,41 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_fancynob) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, Fragment_FancyRotaryKnob.newInstance(0))
+                    .addToBackStack("fancyRotaryKnob")
+                    .commit();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+*/
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            Button b1 = (Button)rootView.findViewById(R.id.button_knob);
+            b1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, Fragment_FancyRotaryKnob.newInstance(0))
+                            .addToBackStack("fancyRotaryKnob")
+                            .commit();
+                }
+            });
+            return rootView;
+        }
     }
 }
