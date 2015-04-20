@@ -19,7 +19,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new PlaceholderFragment())//new PlaceholderFragment())
                     .commit();
         }
     }
@@ -73,7 +73,7 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, Fragment_FancyRotaryKnob.newInstance(0))
+                            .replace(R.id.container, Fragment_Therometer.newInstance(0))
                             .addToBackStack("fancyRotaryKnob")
                             .commit();
                 }
