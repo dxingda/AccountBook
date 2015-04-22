@@ -61,7 +61,7 @@ public final class ThermometerView extends View {
 
     private int NumberOfCategory = 9;  private float total = 0;
     private float[] category = new float[NumberOfCategory];
-    private float[] temp = {25.0f,65.0f,45.0f,15.0f,105.0f,70.0f,50.0f,125.0f,200.f};
+    private float[] temp = {25.0f,65.0f,45.0f,15.0f,105.0f,70.0f,50.0f,125.0f,500.0f};
     private int[] array_color =
             {
                     0x02FF6347,//1
@@ -87,7 +87,17 @@ public final class ThermometerView extends View {
                     0xFF8A2BE2,//9
             };
 
+    private int currentPosition = 0;
 
+    public int getCurrentPosition()
+    {
+        return  currentPosition;
+    }
+    public void setCurrentPosition(int n)
+    {
+        currentPosition = n;
+        invalidate();
+    }
 
     public ThermometerView(Context context) {
         super(context);
@@ -280,11 +290,26 @@ public final class ThermometerView extends View {
                 0.5f - logo.getHeight() * logoScale / 2.0f);
 
         int color = 0x00000000;
-        float position = 0;//getRelativeTemperaturePosition();
-        if (position < 0) {
-            color |= (int) ((0xf0) * -position); // blue
-        } else {
-            color |= ((int) ((0xf0) * position)) << 16; // red
+        int position = getCurrentPosition();
+        float number = category[position]/total;
+        if (number < 0.05) {
+
+            color = 0xFF0000FF;
+        }
+        else if (number <0.15)
+        {
+            color = 0xFF00FFFF;
+        }
+        else if (number <0.3)
+       {
+           color = 0xFF556B2F;
+       }
+        else if (number <0.5)
+        {
+            color = 0xFFFFA500;
+        }
+        else {
+            color =0xFFFF0000;
         }
         //Log.d(TAG, "*** " + Integer.toHexString(color));
         LightingColorFilter logoFilter = new LightingColorFilter(0xff338822, color);
@@ -317,7 +342,6 @@ public final class ThermometerView extends View {
         degreesPerNick = 180.0f/total;
 
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
-
         for(int i=0; i<9;i++) {
             sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
@@ -326,7 +350,7 @@ public final class ThermometerView extends View {
                     array_color2[i],
                     Shader.TileMode.CLAMP));
             float sweep= (360*category[i]/total);
-            canvas.drawArc(faceRect, degree,sweep, true, sectorPaint);
+            canvas.drawArc(faceRect, degree-90,sweep, true, sectorPaint);
             degree += sweep;
         }
         canvas.restore();
@@ -348,19 +372,13 @@ public final class ThermometerView extends View {
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.scale(scale, scale);
 
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
 
         drawCenterCircle(canvas);
-
-        canvas.restore();
-
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
 
         drawLogo(canvas);
         canvas.restore();
 
 
-        canvas.restore();
     }
 
     @Override
@@ -390,7 +408,6 @@ public final class ThermometerView extends View {
 
 
         backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
-
         drawSector(backgroundCanvas);
 
         backgroundCanvas.restore();
