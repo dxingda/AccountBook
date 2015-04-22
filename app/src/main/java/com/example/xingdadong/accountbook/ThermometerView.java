@@ -10,11 +10,9 @@ import android.graphics.LightingColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.Typeface;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,7 +22,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Random;
 
 
 public final class ThermometerView extends View {
@@ -45,23 +42,12 @@ public final class ThermometerView extends View {
 
     private RectF innerRect;
 
-    private Paint scalePaint;
-    private RectF scaleRect;
-
-    private Paint titlePaint;
-    private Path titlePath;
-
     private Paint logoPaint;
     private Bitmap logo;
     private Matrix logoMatrix;
     private float logoScale;
 
-    private Paint handPaint;
-    private Path handPath;
-    private Paint handScrewPaint;
-
     private Paint sectorPaint;
-    private Path sectorPath;
 
     private Paint backgroundPaint;
     // end drawing tools
@@ -69,25 +55,37 @@ public final class ThermometerView extends View {
     private Bitmap background; // holds the cached static part
 
     // scale configuration
-    private static final int totalNicks = 100;
     private static  float degreesPerNick ;//= 360.0f / totalNicks;
-    private static final int centerDegree = 40; // the one in the top center (12 o'clock)
-    private static final int minDegrees = -30;
-    private static final int maxDegrees = 110;
-
-    // hand dynamics -- all are angular expressed in F degrees
-    private boolean handInitialized = true;
-    private float handPosition = centerDegree;
-    private float handTarget = centerDegree;
-    private float handVelocity = 0.0f;
-    private float handAcceleration = 0.0f;
-    private long lastHandMoveTime = -1L;
 
 
-    final Random rand = new Random();
-    private int NumberOfCategory = 10;
+    private int NumberOfCategory = 9;  private float total = 0;
     private float[] category = new float[NumberOfCategory];
-    private float total = 0;
+    private float[] temp = {25.0f,65.0f,45.0f,15.0f,105.0f,70.0f,50.0f,125.0f,200.f};
+    private int[] array_color =
+            {
+                    0xF0FF6347,//1
+                    0xF0FFA500,//2
+                    0xF0B8860B,//3
+                    0xF0BDB76B,//4
+                    0xF09ACD32,//5
+                    0xF000CED1,//6
+                    0xF0191970,//7
+                    0xF08B008B,//8
+                    0xF0FF00FF,//9
+            };
+    private int[] array_color2 =
+            {
+                    0xFFFF6347,//1
+                    0xFFFFA500,//2
+                    0xFFB8860B,//3
+                    0xFFBDB76B,//4
+                    0xFF9ACD32,//5
+                    0xFF00CED1,//6
+                    0xFF191970,//7
+                    0xFF8B008B,//8
+                    0xFFFF00FF,//9
+            };
+
 
 
     public ThermometerView(Context context) {
@@ -115,10 +113,6 @@ public final class ThermometerView extends View {
         mListener = l;
     }
 
-    private String getTitle() {
-        return "Buck Buddy";
-    }
-
     private SensorManager getSensorManager() {
         return (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
     }
@@ -134,7 +128,7 @@ public final class ThermometerView extends View {
         //detachFromSensor();
         super.onDetachedFromWindow();
     }
-
+/*
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle bundle = (Bundle) state;
@@ -163,7 +157,7 @@ public final class ThermometerView extends View {
         state.putLong("lastHandMoveTime", lastHandMoveTime);
         return state;
     }
-
+*/
     private void init() {
         handler = new Handler();
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -171,8 +165,7 @@ public final class ThermometerView extends View {
 
         for(int i=0; i<NumberOfCategory;i++)
         {
-            category[i] = rand.nextInt(100)+1;
-            System.out.println("random category[i]= "+((Float)category[i]).toString());
+            category[i] = temp[i] ;
         }
         for(float x:category)
         {
@@ -180,8 +173,6 @@ public final class ThermometerView extends View {
             total += x;
         }
 
-        degreesPerNick = 360.0f/total;
-        System.out.println("degrees per nick="+degreesPerNick);
         initDrawingTools();
     }
 
@@ -248,7 +239,6 @@ public final class ThermometerView extends View {
         logo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
         logoMatrix = new Matrix();
         logoScale = (1.0f / logo.getWidth()) * 0.3f;
-        ;
         logoMatrix.setScale(logoScale, logoScale);
         //end logo paint
 
@@ -262,14 +252,8 @@ public final class ThermometerView extends View {
         backgroundPaint.setFilterBitmap(true);
 
         sectorPaint = new Paint();
-        sectorPath = new Path();
 
 
-    }
-
-    // in case there is no size specified
-    private int getPreferredSize() {
-        return 300;
     }
 
     private void drawRim(Canvas canvas) {
@@ -289,22 +273,7 @@ public final class ThermometerView extends View {
     }
 
 
-    private int nickToDegree(int nick) {
-        int rawDegree = ((nick < totalNicks / 2) ? nick : (nick - totalNicks)) * 2;
-        int shiftedDegree = rawDegree + centerDegree;
-        return shiftedDegree;
-    }
-
-    private float degreeToAngle(float degree) {
-        return (degree - centerDegree) / 2.0f * degreesPerNick;
-    }
-
-    private void drawTitle(Canvas canvas) {
-        String title = getTitle();
-        canvas.drawTextOnPath(title, titlePath, 0.0f, 0.0f, titlePaint);
-    }
-
-    private void drawLogo(Canvas canvas) {
+   private void drawLogo(Canvas canvas) {
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.translate(0.5f - logo.getWidth() * logoScale / 2.0f,
                 0.5f - logo.getHeight() * logoScale / 2.0f);
@@ -337,30 +306,22 @@ public final class ThermometerView extends View {
     private void drawSector(Canvas canvas){
 
 
-        float radius = 0.4f;
-        float degree =0,olddegree=0;
-        int red,green,blue,nred,ngreen,nblue;
+        float degree =0,old_degree=0;
+        degreesPerNick = 360.0f/total;
 
-        for(int i=0; i<=9;i++) {
-            red=rand.nextInt(120);
-            green=rand.nextInt(105)+150;
-            blue=rand.nextInt(105)+150;
-            nred=(red+30)%255;
-            ngreen=255;
-            nblue=255;
-            System.out.println("category[i]="+((Float)category[i]).toString());
-            sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        for(int i=8; i<=NumberOfCategory-1;i++) {
             sectorPaint.setShader(new LinearGradient(0.40f, 0.0f, 0.8f, 1.0f,
-                    Color.rgb(red,green,blue),
-                    Color.rgb(nred,ngreen,nblue),
+                    array_color[i],
+                    array_color2[i],
                     Shader.TileMode.CLAMP));
 
-            olddegree = degree;
+            old_degree = degree;
             degree += category[i]*degreesPerNick/2;
-            System.out.println("degree:"+degree+" old degree:"+olddegree);
+           // System.out.println("degree:"+degree+" old degree:"+old_degree);
 
             canvas.save(Canvas.MATRIX_SAVE_FLAG);
-            canvas.drawArc(faceRect, olddegree, degree, true, sectorPaint);
+            canvas.drawArc(faceRect, old_degree, degree, false, sectorPaint);
             canvas.restore();
 
         }
@@ -377,21 +338,14 @@ public final class ThermometerView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         drawBackground(canvas);
-
         float scale = (float) getWidth();
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.scale(scale, scale);
 
         drawCenterCircle(canvas);
-       // drawLogo(canvas);
-
+        drawLogo(canvas);
 
         canvas.restore();
-/*
-        if (handNeedsToMove()) {
-            moveHand();
-        }
-*/
     }
 
     @Override
@@ -415,222 +369,7 @@ public final class ThermometerView extends View {
 
         drawRim(backgroundCanvas);
         drawSector(backgroundCanvas);
-
         drawFace(backgroundCanvas);
 
-        //drawScale(backgroundCanvas);
-        //drawTitle(backgroundCanvas);
     }
 }
-/*
-	private boolean handNeedsToMove() {
-		return Math.abs(handPosition - handTarget) > 0.01f;
-	}
-	
-	private float getRelativeTemperaturePosition() {
-		if (handPosition < centerDegree) {
-			return - (centerDegree - handPosition) / (float) (centerDegree - minDegrees);
-		} else {
-			return (handPosition - centerDegree) / (float) (maxDegrees - centerDegree);
-		}
-	}
-	
-	public void setHandTarget(float temperature) {
-		if (temperature < minDegrees) {
-			temperature = minDegrees;
-		} else if (temperature > maxDegrees) {
-			temperature = maxDegrees;
-		}
-		handTarget = temperature;
-		handInitialized = true;
-		invalidate();
-	}
-
-    float previousAngle = 0;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX()/getWidth();
-        float y = event.getY()/getHeight();
-        Log.d("X", Integer.toString((int) x));
-        Log.d("Y", Integer.toString((int) y));
-
-        float angle = cartesianToPolar(1-x, 1-y);
-        Log.d("Angle", Integer.toString((int) angle));
-
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                previousAngle = angle;
-                handTarget = 40f + angle/180*100;
-                if (handTarget < minDegrees) {
-                      handTarget= minDegrees;
-                } else if (handTarget > maxDegrees) {
-                      handTarget = maxDegrees;
-                }
-
-                if (mListener != null) {
-                    mListener.onKnobChanged(handTarget);
-                }
-
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if ((previousAngle >  150f && angle < 0) ||
-                    (previousAngle < -150f && angle > 0)){
-                    break;
-                } else {
-                    previousAngle = angle;
-                }
-                handTarget = 40f + angle/180*100;
-                if (handTarget < minDegrees) {
-                    handTarget= minDegrees;
-                } else if (handTarget > maxDegrees) {
-                    handTarget = maxDegrees;
-                }
-
-                if (mListener != null) {mListener.onKnobChanged(handTarget);}
-
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                break;
-        }
-        return true;
-    }
-
-    private float cartesianToPolar(float x, float y) {
-        return (float) -Math.toDegrees(Math.atan2(x - 0.5f, y - 0.5f));
-    }
-}
-*/
-
-/*
-scalePaint = new Paint();
-		scalePaint.setStyle(Paint.Style.STROKE);
-		scalePaint.setColor(0x9f004d0f);
-		scalePaint.setStrokeWidth(0.005f);
-		scalePaint.setAntiAlias(true);
-
-		scalePaint.setTextSize(0.045f);
-		scalePaint.setTypeface(Typeface.SANS_SERIF);
-		scalePaint.setTextScaleX(0.8f);
-		scalePaint.setTextAlign(Paint.Align.CENTER);
-        scalePaint.setLinearText(true); // added by Kevin to solve a display problem
-
-		float scalePosition = 0.10f;
-		scaleRect = new RectF();
-		scaleRect.set(faceRect.left + scalePosition, faceRect.top + scalePosition,
-					  faceRect.right - scalePosition, faceRect.bottom - scalePosition);
-
-		titlePaint = new Paint();
-		titlePaint.setColor(0xaf946109);
-		titlePaint.setAntiAlias(true);
-		titlePaint.setTypeface(Typeface.DEFAULT_BOLD);
-		titlePaint.setTextAlign(Paint.Align.CENTER);
-		titlePaint.setTextSize(0.05f);
-		titlePaint.setTextScaleX(0.8f);
-
-		titlePath = new Path();
-		titlePath.addArc(new RectF(0.24f, 0.24f, 0.76f, 0.76f), -180.0f, -180.0f);
-
-
-
-		handPaint = new Paint();
-		handPaint.setAntiAlias(true);
-		handPaint.setColor(0xff392f2c);
-		handPaint.setShadowLayer(0.01f, -0.005f, -0.005f, 0x7f000000);
-		handPaint.setStyle(Paint.Style.FILL);
-
-		handPath = new Path();
-		handPath.moveTo(0.5f, 0.5f + 0.2f);
-		handPath.lineTo(0.5f - 0.010f, 0.5f + 0.2f - 0.007f);
-		handPath.lineTo(0.5f - 0.002f, 0.5f - 0.32f);
-		handPath.lineTo(0.5f + 0.002f, 0.5f - 0.32f);
-		handPath.lineTo(0.5f + 0.010f, 0.5f + 0.2f - 0.007f);
-		handPath.lineTo(0.5f, 0.5f + 0.2f);
-		handPath.addCircle(0.5f, 0.5f, 0.025f, Path.Direction.CW);
-
-		handScrewPaint = new Paint();
-		handScrewPaint.setAntiAlias(true);
-		handScrewPaint.setColor(0xffffffff);
-		handScrewPaint.setStyle(Paint.Style.FILL);
-
-
-			private void drawScale(Canvas canvas) {
-		canvas.drawOval(scaleRect, scalePaint);
-
-		canvas.save(Canvas.MATRIX_SAVE_FLAG);
-
-		for (int i = 0; i < totalNicks; ++i) {
-			float y1 = scaleRect.top;
-			float y2 = y1 - 0.020f;
-
-			canvas.drawLine(0.5f, y1, 0.5f, y2, scalePaint);
-
-			if (i % 5 == 0) {
-				int value = nickToDegree(i);
-
-				if (value >= minDegrees && value <= maxDegrees) {
-					String valueString = Integer.toString(value);
-					canvas.drawText(valueString, 0.5f, y2 - 0.015f, scalePaint);
-				}
-			}
-
-			canvas.rotate(degreesPerNick, 0.5f, 0.5f);
-		}
-		canvas.restore();
-	}
-
-
-		private void drawHand(Canvas canvas) {
-		if (handInitialized) {
-			float handAngle = degreeToAngle(handPosition);
-			canvas.save(Canvas.MATRIX_SAVE_FLAG);
-			canvas.rotate(handAngle, 0.5f, 0.5f);
-			canvas.drawPath(handPath, handPaint);
-			canvas.restore();
-
-			canvas.drawCircle(0.5f, 0.5f, 0.01f, handScrewPaint);
-		}
-	}
-
-	private void moveHand() {
-		if (! handNeedsToMove()) {
-			return;
-		}
-
-		if (lastHandMoveTime != -1L) {
-			long currentTime = System.currentTimeMillis();
-			float delta = (currentTime - lastHandMoveTime) / 1000.0f;
-
-			float direction = Math.signum(handVelocity);
-			if (Math.abs(handVelocity) < 90.0f) {
-				handAcceleration = 5.0f * (handTarget - handPosition);
-			} else {
-				handAcceleration = 0.0f;
-			}
-			handPosition += handVelocity * delta;
-			handVelocity += handAcceleration * delta;
-			if ((handTarget - handPosition) * direction < 0.01f * direction) {
-				handPosition = handTarget;
-				handVelocity = 0.0f;
-				handAcceleration = 0.0f;
-				lastHandMoveTime = -1L;
-			} else {
-				lastHandMoveTime = System.currentTimeMillis();
-			}
-			invalidate();
-		} else {
-			lastHandMoveTime = System.currentTimeMillis();
-			moveHand();
-		}
-	}
-
-
-
-
-
-
- */
