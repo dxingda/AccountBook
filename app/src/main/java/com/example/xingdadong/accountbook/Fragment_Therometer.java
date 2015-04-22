@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 /**
  * Created by kevin on 7/6/2014.
@@ -57,6 +58,16 @@ public class Fragment_Therometer extends Fragment {
 
         final ThermometerView thermometer = (ThermometerView) rootView.findViewById(R.id.thermometer);
 
+
+        /*
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.piechart_button);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+*/
 
        // thermometer.setHandTarget(40f);
         /*
