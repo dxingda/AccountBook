@@ -10,12 +10,16 @@ import android.view.View;
 
 
 public class Activity_ViewPage extends ActionBarActivity {
+    public static Data data=new Data();
+    public static final Category category = new Category();
+    public final static String filename = "data";
     ViewPager mViewPager;
     MyFragmentStatePagerAdapter myPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page);
+        data.readFromFile(filename,this);
         myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),2);
         mViewPager=(ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(myPagerAdapter);
@@ -38,9 +42,9 @@ public class Activity_ViewPage extends ActionBarActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position){
-                case 1:
-                    return new Fragment_FrontPage();
                 case 0:
+                    return new Fragment_FrontPage();
+                case 1:
                     return new Fragment_Therometer();
                 default:
                     break;

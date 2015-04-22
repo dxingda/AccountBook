@@ -53,4 +53,11 @@ public class Data {
             e.printStackTrace();
         }
     }
+    public void add(int type,long date,float amount){
+        HashMap cost = new HashMap();
+        cost.put("type",type);
+        cost.put("date",date);
+        cost.put("amount",amount);
+        costList.add(cost);
+    }
 }

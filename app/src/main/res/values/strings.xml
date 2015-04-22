@@ -4,5 +4,7 @@
     <string name="app_name">BuckBud</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_activity__view_page">Activity_ViewPage</string>
+    <string name="title_activity_activity__add_item">Activity_AddItem</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
