@@ -16,6 +16,8 @@ public class Fragment_Therometer extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private int num = 0;
+
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -36,49 +38,25 @@ public class Fragment_Therometer extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_thermometer, container, false);
-        // TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        // textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-
-            /*
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
-            Bitmap tempBitmap = Bitmap.createBitmap(400, 200, Bitmap.Config.RGB_565);
-            Canvas canvas = new Canvas(tempBitmap);
-            Paint paint = new Paint();
-            paint.setColor(Color.RED);
-            paint.setTypeface(Typeface.create("Helvetica", Typeface.BOLD));
-            paint.setStrokeWidth(2);
-            paint.setTextSize(50);
-            canvas.drawText("Hello World", 0, 100, paint);
-
-            imageView.setImageBitmap(tempBitmap);
-
-            DrawTextView myCustomView = (DrawTextView) rootView.findViewById(R.id.mycustomview);
-            myCustomView.setText("Hello World! This is an experiment.");
-            */
-
         final ThermometerView thermometer = (ThermometerView) rootView.findViewById(R.id.thermometer);
 
 
-        /*
         ImageView imageView = (ImageView) rootView.findViewById(R.id.piechart_button);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               int n = thermometer.getCurrentPosition();
 
+                thermometer.setCurrentPosition(((n+1)>8)? 0 : n+1);
+
+                System.out.println("Listener :" +thermometer.getCurrentPosition());
+
+                thermometer.animate().setDuration(100);
+                thermometer.animate().x(65).y(130)
+                        .rotation(10.f*num++);
             }
         });
-*/
 
-       // thermometer.setHandTarget(40f);
-        /*
-        thermometer.setKnobListener(new ThermometerView.RotaryKnobListener() {
-            @Override
-            public void onKnobChanged(float arg) {
-                thermometer1.setHandTarget(arg);
-                thermometer2.setHandTarget(arg);
-            }
-        });
-*/
         return rootView;
     }
 }
