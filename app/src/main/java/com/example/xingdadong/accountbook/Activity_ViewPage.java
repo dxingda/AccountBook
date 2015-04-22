@@ -16,7 +16,7 @@ public class Activity_ViewPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page);
-        myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),3);
+        myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),2);
         mViewPager=(ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(myPagerAdapter);
         mViewPager.setPageTransformer(false,new ViewPager.PageTransformer(){
@@ -39,11 +39,9 @@ public class Activity_ViewPage extends ActionBarActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new Fragment_FancyRotaryKnob();
+                    return new Fragment_FrontPage();
                 case 1:
                     return new Fragment_Therometer();
-                case 2:
-                    return new Fragment_FrontPage();
                 default:
                     break;
             }
