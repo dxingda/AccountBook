@@ -10,8 +10,102 @@
 
 
     <com.example.xingdadong.accountbook.ThermometerView
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:layout_width="400dp"
         android:id="@+id/thermometer"/>
+
+    <LinearLayout
+        android:id="@+id/layout_lable1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/thermometer"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/lable1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            />
+
+        <TextView
+            android:id="@+id/lable2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_lable1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layout_income"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_income"
+                android:text="Income"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_income_number"
+                android:text="0.00"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_expense"
+                android:text="Expense"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_expense_number"
+                android:text="0.00"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_balance"
+                android:text="balance"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_balance_number"
+                android:text="0.00"/>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
