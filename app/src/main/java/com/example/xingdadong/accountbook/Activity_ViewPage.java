@@ -38,9 +38,9 @@ public class Activity_ViewPage extends ActionBarActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position){
-                case 0:
-                    return new Fragment_FrontPage();
                 case 1:
+                    return new Fragment_FrontPage();
+                case 0:
                     return new Fragment_Therometer();
                 default:
                     break;

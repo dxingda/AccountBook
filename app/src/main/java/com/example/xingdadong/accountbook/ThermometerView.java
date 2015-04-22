@@ -28,6 +28,7 @@ public final class ThermometerView extends View {
 
     private static final String TAG = ThermometerView.class.getSimpleName();
 
+
     private Handler handler;
 
     // drawing tools
@@ -63,27 +64,27 @@ public final class ThermometerView extends View {
     private float[] temp = {25.0f,65.0f,45.0f,15.0f,105.0f,70.0f,50.0f,125.0f,200.f};
     private int[] array_color =
             {
-                    0xF0FF6347,//1
-                    0xF0FFA500,//2
-                    0xF0B8860B,//3
-                    0xF0BDB76B,//4
-                    0xF09ACD32,//5
-                    0xF000CED1,//6
-                    0xF0191970,//7
-                    0xF08B008B,//8
-                    0xF0FF00FF,//9
+                    0x02FF6347,//1
+                    0x02FFA500,//2
+                    0x02FFD700,//3
+                    0x029ACD32,//4
+                    0x0290EE90,//5
+                    0x0200FFFF,//6
+                    0x0200CED1,//7
+                    0x026A5ACD,//8
+                    0x028A2BE2,//9
             };
     private int[] array_color2 =
             {
                     0xFFFF6347,//1
                     0xFFFFA500,//2
-                    0xFFB8860B,//3
-                    0xFFBDB76B,//4
-                    0xFF9ACD32,//5
-                    0xFF00CED1,//6
-                    0xFF191970,//7
-                    0xFF8B008B,//8
-                    0xFFFF00FF,//9
+                    0xFFFFD700,//3
+                    0xFF9ACD32,//4
+                    0xFF90EE90,//5
+                    0xFF00FFFF,//6
+                    0xFF00CED1,//7
+                    0xFF6A5ACD,//8
+                    0xFF8A2BE2,//9
             };
 
 
@@ -236,7 +237,7 @@ public final class ThermometerView extends View {
         //logo paint
         logoPaint = new Paint();
         logoPaint.setFilterBitmap(true);
-        logo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.logo);
+        logo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.w_logo2);
         logoMatrix = new Matrix();
         logoScale = (1.0f / logo.getWidth()) * 0.3f;
         logoMatrix.setScale(logoScale, logoScale);
@@ -303,28 +304,33 @@ public final class ThermometerView extends View {
             canvas.restore();
     }
 
+
+    private int nickToDegree(int nick) {
+        int rawDegree = ((nick < (int)total / 2) ? nick : (nick - (int)total)) * 2;
+        return rawDegree;
+    }
+
     private void drawSector(Canvas canvas){
 
 
-        float degree =0,old_degree=0;
-        degreesPerNick = 360.0f/total;
+        float degree =0;
+        degreesPerNick = 180.0f/total;
 
-        sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        for(int i=8; i<=NumberOfCategory-1;i++) {
-            sectorPaint.setShader(new LinearGradient(0.40f, 0.0f, 0.8f, 1.0f,
+        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+
+        for(int i=0; i<9;i++) {
+            sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+            sectorPaint.setShader(new LinearGradient(0.45f, 0.0f, 0.9f, 1.0f,
                     array_color[i],
                     array_color2[i],
                     Shader.TileMode.CLAMP));
-
-            old_degree = degree;
-            degree += category[i]*degreesPerNick/2;
-           // System.out.println("degree:"+degree+" old degree:"+old_degree);
-
-            canvas.save(Canvas.MATRIX_SAVE_FLAG);
-            canvas.drawArc(faceRect, old_degree, degree, false, sectorPaint);
-            canvas.restore();
-
+            float sweep= (360*category[i]/total);
+            canvas.drawArc(faceRect, degree,sweep, true, sectorPaint);
+            degree += sweep;
         }
+        canvas.restore();
+
     }
 
     private void drawBackground(Canvas canvas) {
@@ -342,8 +348,17 @@ public final class ThermometerView extends View {
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.scale(scale, scale);
 
+        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+
         drawCenterCircle(canvas);
+
+        canvas.restore();
+
+        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+
         drawLogo(canvas);
+        canvas.restore();
+
 
         canvas.restore();
     }
@@ -367,9 +382,23 @@ public final class ThermometerView extends View {
         backgroundCanvas.scale(scale, scale);
 
 
+        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+
         drawRim(backgroundCanvas);
+
+        backgroundCanvas.restore();
+
+
+        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+
         drawSector(backgroundCanvas);
+
+        backgroundCanvas.restore();
+
+        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
         drawFace(backgroundCanvas);
+        backgroundCanvas.restore();
+
 
     }
 }
