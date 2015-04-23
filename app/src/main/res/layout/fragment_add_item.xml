@@ -17,21 +17,29 @@
             android:layout_height="50dp"
             android:scaleType="fitXY"
             android:id="@+id/ic_type"
+            android:layout_alignParentBottom="true"
             android:src="@drawable/others"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/ic_type"
+            android:layout_alignParentBottom="true"
+            android:textSize="30dp"
+            android:paddingBottom="5dp"
             android:id="@+id/type"
             android:text="others"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/type"
+            android:paddingLeft="20dp"
+            android:textSize="20dp"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:id="@+id/amount"
-            android:text="100"/>
+            android:text="0.00"
+            android:singleLine="true"
+            android:width="160dp" />
         </RelativeLayout>
 
 </RelativeLayout>

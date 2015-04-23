@@ -55,7 +55,7 @@ public class Fragment_FrontPage extends Fragment {
     }
     public void onResume(){
         super.onResume();
-        income.setText(Float.toString(Activity_ViewPage.category.getIncome()*(-1)));
+        income.setText(Float.toString(Math.abs(Activity_ViewPage.category.getIncome())));
         expense.setText(Float.toString(Activity_ViewPage.category.getExpense()));
     }
 }

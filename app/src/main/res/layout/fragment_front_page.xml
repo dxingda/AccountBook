@@ -22,42 +22,48 @@
             android:orientation="horizontal">
             <LinearLayout
                 android:paddingTop="80dp"
+                android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20dp"
                     android:text="income"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100"
+                    android:textSize="20dp"
                     android:id="@+id/income"/>
                 </LinearLayout>
             <ImageButton
                 android:layout_centerHorizontal="true"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:id="@+id/btn1"
                 android:src="@drawable/plus"
-                android:scaleType="fitCenter"
+                android:scaleType="fitXY"
                 android:background="@drawable/button_piechart"/>
             <LinearLayout
                 android:paddingTop="80dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:layout_alignParentRight="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="20dp"
                     android:text="expense"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100"
+                    android:textSize="20dp"
                     android:id="@+id/expense"/>
             </LinearLayout>
         </RelativeLayout>

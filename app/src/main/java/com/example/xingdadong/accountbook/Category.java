@@ -89,7 +89,7 @@ public class Category {
         category=new HashMap();
         category.put("id",2);
         category.put("icon",R.drawable.entertainment);
-        category.put("type","entertainment");
+        category.put("type","entertain");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
