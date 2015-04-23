@@ -130,7 +130,7 @@ public class Category {
 
         category=new HashMap();
         category.put("id",8);
-        category.put("icon",R.drawable.dollar_icon);
+        category.put("icon",R.drawable.travel);
         category.put("type","income");
         category.put("amount",(float)0.0);
         categoryList.add(category);

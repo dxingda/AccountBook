@@ -350,7 +350,7 @@ public final class ThermometerView extends View {
         degreesPerNick = 180.0f/total;
 
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        for(int i=0; i<9;i++) {
+        for(int i=0; i<8;i++) {
             sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
             sectorPaint.setShader(new LinearGradient(0.45f, 0.0f, 0.9f, 1.0f,

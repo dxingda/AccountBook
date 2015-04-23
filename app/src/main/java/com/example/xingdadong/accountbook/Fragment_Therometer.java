@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by kevin on 7/6/2014.
@@ -50,19 +51,28 @@ public class Fragment_Therometer extends Fragment {
         final TextView cate = (TextView)rootView.findViewById(R.id.lable1);
         final TextView amnt = (TextView)rootView.findViewById(R.id.lable2);
         final ImageView label = (ImageView)rootView.findViewById(R.id.thero_icon);
+        int flag=0;
+        index=0;
+        if(Activity_ViewPage.data.getSize()==0){
+            cate.setText("category");
+            amnt.setText("0.0");
+        }else{
+            while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
+            {
+                ++index;
 
-
-        while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
-        {
-            ++index;
-
-            if(index>Activity_ViewPage.category.getSize()-1) index=0;
+                if(index>Activity_ViewPage.category.getSize()-1){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0) {
+                cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
+                amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
+                label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                index++;
+            }
         }
-
-        cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
-        amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
-        label.setImageResource((int)Activity_ViewPage.category.getItem(index).get("icon"));
-        index++;
 
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.piechart_button);
@@ -74,25 +84,32 @@ public class Fragment_Therometer extends Fragment {
                 thermometer.setCurrentPosition(((n+1)>8)? 0 : n+1);
 
 
-                while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
+                if(Activity_ViewPage.data.getSize()==0){
+                    cate.setText("category");
+                    amnt.setText("0.0");
+                    Toast.makeText(getActivity(),"No data entry!",Toast.LENGTH_SHORT).show();
+                }else
                 {
-                    ++index;
+                    int i;
+                    index = index%9;
+                    System.out.println("index= "+index);
+                    for(i=0;(i<Activity_ViewPage.category.getSize())&&
+                            ((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
+                            ;i++){
+                        index++;
+                        index%=(float)Activity_ViewPage.category.getSize();
+                    }
+                    if(i<(float)Activity_ViewPage.category.getSize()) {
+                        cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
+                        amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
+                        label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                    }
+                    index =(++index)%9;
 
-                    if(index>Activity_ViewPage.category.getSize()-1) index=0;
+                    thermometer.animate().setDuration(100);
+                    thermometer.animate().x(65).y(130)
+                            .rotation(-10.f * num++);
                 }
-
-                cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
-                amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
-                label.setImageResource((int)Activity_ViewPage.category.getItem(index).get("icon"));
-
-                System.out.println("Listener :" +thermometer.getCurrentPosition());
-
-                thermometer.animate().setDuration(100);
-                thermometer.animate().x(65).y(130)
-                        .rotation(-10.f*num++);
-                index++;
-                if(index>Activity_ViewPage.category.getSize()-1) index=0;
-
             }
         });
 
