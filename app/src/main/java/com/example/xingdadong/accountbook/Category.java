@@ -56,24 +56,18 @@ public class Category {
         int i;
         float expense=0;
         HashMap category;
-        for(i=0;i<getSize();i++){
+        for(i=0;i<getSize()-1;i++){
             category=(HashMap)categoryList.get(i);
-            if(7!=((Integer)category.get("id"))){
-                expense+=(Float)category.get("amount");
-            }
+            expense+=(Float)category.get("amount");
+
         }
         return expense;
     }
     public float getIncome(){
-        int i;
         float income=0;
         HashMap category;
-        for(i=0;i<getSize();i++){
-            category=(HashMap)categoryList.get(i);
-            if(7!=((Integer)category.get("id"))){
-                income+=(Float)category.get("amount");
-            }
-        }
+        category=(HashMap)categoryList.get(8);
+        income+=(Float)category.get("amount");
         return income;
     }
     private void createCategory(){
@@ -130,14 +124,14 @@ public class Category {
         category=new HashMap();
         category.put("id",7);
         category.put("icon",R.drawable.travel);
-        category.put("type","income");
+        category.put("type","travel");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
         category=new HashMap();
         category.put("id",8);
         category.put("icon",R.drawable.others);
-        category.put("type","others");
+        category.put("type","income");
         category.put("amount",(float)0.0);
         categoryList.add(category);
     }

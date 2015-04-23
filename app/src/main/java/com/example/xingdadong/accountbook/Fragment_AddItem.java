@@ -51,7 +51,7 @@ public class Fragment_AddItem extends Fragment {
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     amount=Float.valueOf(edittext.getText().toString());
                     // Perform action on key press
-                    if(arr[0]==7){
+                    if(arr[0]==8){
                         Activity_ViewPage.data.add(arr[0], 0,(-1)* amount);
                         Activity_ViewPage.category.update(Activity_ViewPage.category_file,arr[0],(-1)*amount);
 
