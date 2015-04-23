@@ -8,15 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Fragment_FrontPage extends Fragment {
-    private static final int REQUEST_CODE=0;
     public static final FrontPageRecyclerAdapter adp=new FrontPageRecyclerAdapter(Activity_ViewPage.data.getCostList());
+    private TextView income;
+    private TextView expense;
+
     public Fragment_FrontPage() {
         // Required empty public constructor
     }
@@ -30,6 +32,10 @@ public class Fragment_FrontPage extends Fragment {
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         ImageButton btn=(ImageButton)rootView.findViewById(R.id.btn1);
+        final TextView income=(TextView)rootView.findViewById(R.id.income);
+        final TextView expense=(TextView)rootView.findViewById(R.id.expense);
+        this.income=income;
+        this.expense=expense;
         myRecyclerView.setAdapter(adp);
         adp.SetOnItemClickListener(new FrontPageRecyclerAdapter.OnItemClickListener() {
             //@Override
@@ -41,12 +47,15 @@ public class Fragment_FrontPage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(),Activity_AddItem.class);
-                startActivityForResult(i,REQUEST_CODE);
+                startActivity(i);
             }
         });
         // Inflate the layout for this fragment
         return rootView;
     }
-
-
+    public void onResume(){
+        super.onResume();
+        income.setText(Float.toString(Activity_ViewPage.category.getIncome()*(-1)));
+        expense.setText(Float.toString(Activity_ViewPage.category.getExpense()));
+    }
 }

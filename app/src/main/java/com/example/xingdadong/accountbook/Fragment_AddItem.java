@@ -45,17 +45,21 @@ public class Fragment_AddItem extends Fragment {
         final EditText edittext = (EditText)rootView.findViewById(R.id.amount);
         edittext.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                float amount;
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    amount=Float.valueOf(edittext.getText().toString());
                     // Perform action on key press
                     if(arr[0]==7){
-                        Activity_ViewPage.data.add(arr[0], 0,(-1)* Float.valueOf(edittext.getText().toString()));
+                        Activity_ViewPage.data.add(arr[0], 0,(-1)* amount);
+                        Activity_ViewPage.category.update(Activity_ViewPage.category_file,arr[0],(-1)*amount);
 
                     }else {
-                        Activity_ViewPage.data.add(arr[0], 0, Float.valueOf(edittext.getText().toString()));
+                        Activity_ViewPage.data.add(arr[0], 0, amount);
+                        Activity_ViewPage.category.update(Activity_ViewPage.category_file,arr[0],amount);
                     }
-                    Activity_ViewPage.data.writeToFile(Activity_ViewPage.filename,getActivity());
+                    Activity_ViewPage.data.writeToFile(Activity_ViewPage.filename);
                     Fragment_FrontPage.adp.notifyDataSetChanged();
                     getActivity().finish();
                     return true;

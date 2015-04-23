@@ -1,7 +1,5 @@
 package com.example.xingdadong.accountbook;
 
-import android.content.Context;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -11,13 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by xingdadong on 4/20/15.
- */
+
 public class Data {
     List<Map<String,?>> costList;
-    public Data(){
-        costList=new ArrayList<Map<String,?>>();
+    public Data(String filename){
+        costList=new ArrayList();
+        readFromFile(filename);
     }
     public int getSize(){
         return costList.size();
@@ -31,10 +28,10 @@ public class Data {
         }else
             return null;
     }
-    public void readFromFile(String filename,Context context){
+    public void readFromFile(String filename){
         FileInputStream inputStream;
         try {
-            inputStream = context.openFileInput(filename);
+            inputStream = new FileInputStream(filename);
             ObjectInputStream temp = new ObjectInputStream(inputStream);
             costList = (ArrayList<Map<String,?>>)temp.readObject();
             inputStream.close();
@@ -42,10 +39,10 @@ public class Data {
             e.printStackTrace();
         }
     }
-    public void writeToFile(String filename,Context context){
+    public void writeToFile(String filename){
         FileOutputStream outputStream;
         try {
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream = new FileOutputStream(filename, false);
             ObjectOutputStream temp=new ObjectOutputStream(outputStream);
             temp.writeObject(costList);
             outputStream.close();

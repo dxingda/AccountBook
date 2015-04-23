@@ -10,16 +10,17 @@ import android.view.View;
 
 
 public class Activity_ViewPage extends ActionBarActivity {
-    public static Data data=new Data();
-    public static final Category category = new Category();
-    public final static String filename = "data";
+    public final static String filename = "/data/data/com.example.xingdadong.accountbook/files/data";
+    public final static String category_file="/data/data/com.example.xingdadong.accountbook/files/category";
+    public static Data data=new Data(filename);
+    public static final Category category = new Category(category_file);
     ViewPager mViewPager;
     MyFragmentStatePagerAdapter myPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page);
-        data.readFromFile(filename,this);
+        data.readFromFile(filename);
         myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),2);
         mViewPager=(ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(myPagerAdapter);
