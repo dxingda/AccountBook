@@ -99,6 +99,17 @@ public final class ThermometerView extends View {
         invalidate();
     }
 
+    public void setAmount(int index, float n)
+    {
+        category[index] = n;
+        invalidate();
+
+    }
+
+    public float getTotal(){return  total;}
+    public void setTotal(float n){total=n;        invalidate();
+    }
+
     public ThermometerView(Context context) {
         super(context);
         init();
@@ -173,16 +184,13 @@ public final class ThermometerView extends View {
         handler = new Handler();
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-
+/*
         for(int i=0; i<NumberOfCategory;i++)
         {
             category[i] = temp[i] ;
         }
-        for(float x:category)
-        {
 
-            total += x;
-        }
+        */
 
         initDrawingTools();
     }
@@ -350,6 +358,7 @@ public final class ThermometerView extends View {
                     array_color2[i],
                     Shader.TileMode.CLAMP));
             float sweep= (360*category[i]/total);
+            System.out.println("sector: category: "+ category[i]+" total:"+total);
             canvas.drawArc(faceRect, degree-90,sweep, true, sectorPaint);
             degree += sweep;
         }
@@ -367,8 +376,39 @@ public final class ThermometerView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawBackground(canvas);
+
+        //-------------------------------
+        if (background != null) {
+            background.recycle();
+        }
+
+        background = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas backgroundCanvas = new Canvas(background);
         float scale = (float) getWidth();
+        backgroundCanvas.scale(scale, scale);
+
+
+        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+
+        drawRim(backgroundCanvas);
+
+        backgroundCanvas.restore();
+
+
+        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+        drawSector(backgroundCanvas);
+
+        backgroundCanvas.restore();
+
+        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+        drawFace(backgroundCanvas);
+        backgroundCanvas.restore();
+
+
+        //-------------------------------
+
+        drawBackground(canvas);
+        scale = (float) getWidth();
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.scale(scale, scale);
 

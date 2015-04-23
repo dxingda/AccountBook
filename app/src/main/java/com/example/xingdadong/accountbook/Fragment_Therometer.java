@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by kevin on 7/6/2014.
@@ -17,6 +18,8 @@ public class Fragment_Therometer extends Fragment {
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
     private int num = 0;
+    private TextView income, expense, balance;
+    private ThermometerView thermometer;
 
 
     /**
@@ -38,7 +41,11 @@ public class Fragment_Therometer extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_thermometer, container, false);
-        final ThermometerView thermometer = (ThermometerView) rootView.findViewById(R.id.thermometer);
+        thermometer = (ThermometerView) rootView.findViewById(R.id.thermometer);
+        income = (TextView)rootView.findViewById(R.id.textview_income_number);
+        expense= (TextView)rootView.findViewById(R.id.textview_expense_number);
+        balance=(TextView)rootView.findViewById(R.id.textview_balance_number);
+
 
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.piechart_button);
@@ -49,6 +56,7 @@ public class Fragment_Therometer extends Fragment {
 
                 thermometer.setCurrentPosition(((n+1)>8)? 0 : n+1);
 
+
                 System.out.println("Listener :" +thermometer.getCurrentPosition());
 
                 thermometer.animate().setDuration(100);
@@ -58,5 +66,23 @@ public class Fragment_Therometer extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        float in=Activity_ViewPage.category.getIncome();
+        float out = Activity_ViewPage.category.getExpense();
+        income.setText(Float.toString(in*(-1)));
+        expense.setText(Float.toString(out));
+        balance.setText(Float.toString(in+out));
+        for(int i = 0; i<9;i++)
+        {
+            thermometer.setAmount(i, (float)Activity_ViewPage.category.getItem(i).get("amount"));
+            System.out.println("category="+i+" amount="+(float)Activity_ViewPage.category.getItem(i).get("amount"));
+        }
+
+        thermometer.setTotal(Activity_ViewPage.category.getExpense());
     }
 }
