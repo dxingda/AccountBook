@@ -20,6 +20,8 @@ public class Fragment_Therometer extends Fragment {
     private int num = 0;
     private TextView income, expense, balance;
     private ThermometerView thermometer;
+    private int index = 0;
+
 
 
     /**
@@ -45,7 +47,22 @@ public class Fragment_Therometer extends Fragment {
         income = (TextView)rootView.findViewById(R.id.textview_income_number);
         expense= (TextView)rootView.findViewById(R.id.textview_expense_number);
         balance=(TextView)rootView.findViewById(R.id.textview_balance_number);
+        final TextView cate = (TextView)rootView.findViewById(R.id.lable1);
+        final TextView amnt = (TextView)rootView.findViewById(R.id.lable2);
+        final ImageView label = (ImageView)rootView.findViewById(R.id.thero_icon);
 
+
+        while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
+        {
+            ++index;
+
+            if(index>Activity_ViewPage.category.getSize()-1) index=0;
+        }
+
+        cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
+        amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
+        label.setImageResource((int)Activity_ViewPage.category.getItem(index).get("icon"));
+        index++;
 
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.piechart_button);
@@ -57,11 +74,25 @@ public class Fragment_Therometer extends Fragment {
                 thermometer.setCurrentPosition(((n+1)>8)? 0 : n+1);
 
 
+                while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
+                {
+                    ++index;
+
+                    if(index>Activity_ViewPage.category.getSize()-1) index=0;
+                }
+
+                cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
+                amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
+                label.setImageResource((int)Activity_ViewPage.category.getItem(index).get("icon"));
+
                 System.out.println("Listener :" +thermometer.getCurrentPosition());
 
                 thermometer.animate().setDuration(100);
                 thermometer.animate().x(65).y(130)
-                        .rotation(10.f*num++);
+                        .rotation(-10.f*num++);
+                index++;
+                if(index>Activity_ViewPage.category.getSize()-1) index=0;
+
             }
         });
 
