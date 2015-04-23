@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +29,7 @@ public class Fragment_FrontPage extends Fragment {
         RecyclerView myRecyclerView=(RecyclerView)rootView.findViewById(R.id.cardList);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        Button btn=(Button)rootView.findViewById(R.id.btn1);
+        ImageButton btn=(ImageButton)rootView.findViewById(R.id.btn1);
         myRecyclerView.setAdapter(adp);
         adp.SetOnItemClickListener(new FrontPageRecyclerAdapter.OnItemClickListener() {
             //@Override
