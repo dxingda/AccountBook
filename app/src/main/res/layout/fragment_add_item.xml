@@ -5,6 +5,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="match_parent"
+        android:paddingLeft="20dp"
         android:layout_height="300dp">
 
     </android.support.v7.widget.RecyclerView>
@@ -18,7 +19,7 @@
             android:scaleType="fitXY"
             android:id="@+id/ic_type"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/others"/>
+            android:src="@drawable/income"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
             android:textSize="30dp"
             android:paddingBottom="5dp"
             android:id="@+id/type"
-            android:text="others"/>
+            android:text="income"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

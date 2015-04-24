@@ -128,7 +128,7 @@ public class Fragment_Therometer extends Fragment {
         super.onResume();
         float in=Activity_ViewPage.category.getIncome();
         float out = Activity_ViewPage.category.getExpense();
-        income.setText(Float.toString(in*(-1)));
+        income.setText(Float.toString(Math.abs(in)));
         expense.setText(Float.toString(out));
         balance.setText(Float.toString(in+out));
         for(int i = 0; i<9;i++)

@@ -74,29 +74,29 @@ public class Category {
         HashMap category;
         category=new HashMap();
         category.put("id",0);
-        category.put("icon",R.drawable.clothes);
+        category.put("icon", R.drawable.clothes);
         category.put("type","clothes");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
         category=new HashMap();
         category.put("id",1);
-        category.put("icon",R.drawable.dinning);
+        category.put("icon",R.drawable.dining);
         category.put("type","dinning");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
         category=new HashMap();
         category.put("id",2);
-        category.put("icon",R.drawable.entertainment);
+        category.put("icon",R.drawable.entertain);
         category.put("type","entertain");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
         category=new HashMap();
         category.put("id",3);
-        category.put("icon",R.drawable.online);
-        category.put("type","online");
+        category.put("icon",R.drawable.health);
+        category.put("type","health");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
@@ -109,15 +109,15 @@ public class Category {
 
         category=new HashMap();
         category.put("id",5);
-        category.put("icon",R.drawable.snacks);
-        category.put("type","snacks");
+        category.put("icon",R.drawable.pet);
+        category.put("type","pet");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
         category=new HashMap();
         category.put("id",6);
-        category.put("icon",R.drawable.ticket);
-        category.put("type","ticket");
+        category.put("icon",R.drawable.electronic);
+        category.put("type","electronic");
         category.put("amount",(float)0.0);
         categoryList.add(category);
 
@@ -130,7 +130,7 @@ public class Category {
 
         category=new HashMap();
         category.put("id",8);
-        category.put("icon",R.drawable.travel);
+        category.put("icon",R.drawable.income);
         category.put("type","income");
         category.put("amount",(float)0.0);
         categoryList.add(category);
