@@ -64,15 +64,15 @@ public final class ThermometerView extends View {
     private float[] temp = {25.0f,65.0f,45.0f,15.0f,105.0f,70.0f,50.0f,125.0f,500.0f};
     private int[] array_color =
             {
-                    0x02FF6347,//1
-                    0x02FFA500,//2
-                    0x02FFD700,//3
-                    0x029ACD32,//4
-                    0x0290EE90,//5
-                    0x0200FFFF,//6
-                    0x0200CED1,//7
-                    0x026A5ACD,//8
-                    0x028A2BE2,//9
+                    0x2FFF6347,//1
+                    0x2FFFA500,//2
+                    0x2FFFD700,//3
+                    0x2F9ACD32,//4
+                    0x2F90EE90,//5
+                    0x2F00FFFF,//6
+                    0x2F00CED1,//7
+                    0x2F6A5ACD,//8
+                    0x2F8A2BE2,//9
             };
     private int[] array_color2 =
             {
@@ -105,6 +105,16 @@ public final class ThermometerView extends View {
         invalidate();
 
     }
+
+    int index;
+
+
+    public void setAngle(int n)
+    {
+        index = n;
+        invalidate();
+    }
+
 
     public float getTotal(){return  total;}
     public void setTotal(float n){total=n;        invalidate();
@@ -183,15 +193,6 @@ public final class ThermometerView extends View {
     private void init() {
         handler = new Handler();
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-
-/*
-        for(int i=0; i<NumberOfCategory;i++)
-        {
-            category[i] = temp[i] ;
-        }
-
-        */
-
         initDrawingTools();
     }
 
@@ -280,12 +281,12 @@ public final class ThermometerView extends View {
         canvas.drawOval(rimRect, rimPaint);
         // now the outer rim circle
         canvas.drawOval(rimRect, rimCirclePaint);
+
+        drawFace(canvas);
     }
 
     private void drawFace(Canvas canvas) {
-        //fill texture
-       // canvas.drawOval(faceRect, facePaint);
-        // draw the inner rim circle
+
         canvas.drawOval(faceRect, rimCirclePaint);
         // draw the rim shadow inside the face
         canvas.drawOval(faceRect, rimShadowPaint);
@@ -302,22 +303,22 @@ public final class ThermometerView extends View {
         float number = category[position]/total;
         if (number < 0.05) {
 
-            color = 0xFF0000FF;
+            color = 0xFFB800;
         }
         else if (number <0.15)
         {
-            color = 0xFF00FFFF;
+            color = 0xFFFFD700;
         }
         else if (number <0.3)
        {
-           color = 0xFF556B2F;
+           color = 0xFFFFDA00;
        }
         else if (number <0.5)
         {
-            color = 0xFFFFA500;
+            color = 0xFFFE700;
         }
         else {
-            color =0xFFFF0000;
+            color =0xFFFFF500;
         }
         //Log.d(TAG, "*** " + Integer.toHexString(color));
         LightingColorFilter logoFilter = new LightingColorFilter(0xff338822, color);
@@ -350,6 +351,15 @@ public final class ThermometerView extends View {
         degreesPerNick = 180.0f/total;
 
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        for(int i=0; i< index;i++)
+        {
+            float sweep= (360*category[i]/total);
+            degree += sweep;
+        }
+        canvas.rotate(-degree-180*category[index]/total,0.5f,0.5f);
+        System.out.println("index: "+index+ "   degree :"+(-degree-180*category[index]/total));
+        degree=0;
+
         for(int i=0; i<8;i++) {
             sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
@@ -358,7 +368,6 @@ public final class ThermometerView extends View {
                     array_color2[i],
                     Shader.TileMode.CLAMP));
             float sweep= (360*category[i]/total);
-            System.out.println("sector: category: "+ category[i]+" total:"+total);
             canvas.drawArc(faceRect, degree-90,sweep, true, sectorPaint);
             degree += sweep;
         }
@@ -386,30 +395,22 @@ public final class ThermometerView extends View {
         Canvas backgroundCanvas = new Canvas(background);
         float scale = (float) getWidth();
         backgroundCanvas.scale(scale, scale);
-
-
-        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+        backgroundCanvas.save();
 
         drawRim(backgroundCanvas);
-
         backgroundCanvas.restore();
 
-
-        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
         drawSector(backgroundCanvas);
+        drawBackground(canvas);
 
-        backgroundCanvas.restore();
 
-        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
-        drawFace(backgroundCanvas);
-        backgroundCanvas.restore();
 
 
         //-------------------------------
 
-        drawBackground(canvas);
+
         scale = (float) getWidth();
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.save();
         canvas.scale(scale, scale);
 
 
@@ -417,6 +418,7 @@ public final class ThermometerView extends View {
 
         drawLogo(canvas);
         canvas.restore();
+
 
 
     }
@@ -447,14 +449,6 @@ public final class ThermometerView extends View {
         backgroundCanvas.restore();
 
 
-        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
-        drawSector(backgroundCanvas);
-
-        backgroundCanvas.restore();
-
-        backgroundCanvas.save(Canvas.MATRIX_SAVE_FLAG);
-        drawFace(backgroundCanvas);
-        backgroundCanvas.restore();
 
 
     }

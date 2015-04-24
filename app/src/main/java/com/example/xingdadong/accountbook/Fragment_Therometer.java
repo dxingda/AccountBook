@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,7 +93,6 @@ public class Fragment_Therometer extends Fragment {
                 {
                     int i;
                     index = index%9;
-                    System.out.println("index= "+index);
                     for(i=0;(i<Activity_ViewPage.category.getSize())&&
                             ((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
                             ;i++){
@@ -103,12 +103,16 @@ public class Fragment_Therometer extends Fragment {
                         cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
                         amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
                         label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                        thermometer.setAngle(index);
+
                     }
                     index =(++index)%9;
 
-                    thermometer.animate().setDuration(100);
-                    thermometer.animate().x(65).y(130)
-                            .rotation(-10.f * num++);
+                    //thermometer.setAngle(thermometer.getAngle() + 1);
+                    //thermometer.animate().setDuration(100);
+                    //thermometer.animate().rotation(-10.f * num++);
+
+                    //thermometer.startAnimation( AnimationUtils.loadAnimation(getActivity(), R.anim.ani_rotation));
                 }
             }
         });
@@ -128,7 +132,6 @@ public class Fragment_Therometer extends Fragment {
         for(int i = 0; i<9;i++)
         {
             thermometer.setAmount(i, (float)Activity_ViewPage.category.getItem(i).get("amount"));
-            System.out.println("category="+i+" amount="+(float)Activity_ViewPage.category.getItem(i).get("amount"));
         }
 
         thermometer.setTotal(Activity_ViewPage.category.getExpense());
