@@ -321,22 +321,22 @@ public final class ThermometerView extends View {
         float number = category[position]/total;
         if (number < 0.05) {
 
-            color = 0xFFB800;
+            color = 0xFFADFF2F;
         }
         else if (number <0.15)
         {
-            color = 0xFFFFD700;
+            color = 0xFFCAFF70;
         }
         else if (number <0.3)
        {
-           color = 0xFFFFDA00;
+           color = 0xFFBCEE68;
        }
         else if (number <0.5)
         {
-            color = 0xFFFE700;
+            color = 0xFFA2CD5A;
         }
         else {
-            color =0xFFFFF500;
+            color =0xFF6E8B3D;
         }
         //Log.d(TAG, "*** " + Integer.toHexString(color));
         LightingColorFilter logoFilter = new LightingColorFilter(0xff338822, color);

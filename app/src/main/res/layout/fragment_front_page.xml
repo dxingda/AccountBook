@@ -13,6 +13,13 @@
             android:src="@drawable/jeans"
             android:scaleType="fitXY"
             android:id="@+id/banner"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_buckbud"
+            />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
