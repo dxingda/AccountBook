@@ -17,10 +17,11 @@ import java.util.HashMap;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Fragment_FrontPage extends Fragment implements MyFragmentStatePagerAdapter.FragmentLifecycle {
+public class Fragment_FrontPage extends Fragment{
     public static final FrontPageRecyclerAdapter adp=new FrontPageRecyclerAdapter(Activity_ViewPage.data.getCostList());
     public static TextView income;
     public static TextView expense;
+    static View v;
 
     public Fragment_FrontPage() {
         // Required empty public constructor
@@ -43,7 +44,6 @@ public class Fragment_FrontPage extends Fragment implements MyFragmentStatePager
         adp.SetOnItemClickListener(new FrontPageRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                FrontPageRecyclerAdapter.ViewHolder holder = (FrontPageRecyclerAdapter.ViewHolder) view.getTag();
                 int prev=-1;
                 // Check for an expanded view, collapse if you find one
                 if (adp.expandedPosition >= 0) {
@@ -58,6 +58,7 @@ public class Fragment_FrontPage extends Fragment implements MyFragmentStatePager
                     adp.expandedPosition = position;
                     adp.notifyItemChanged(adp.expandedPosition);
                 }
+                v=view;
             }
             public void onShareClick(View view,int position){
                 Intent intentShare=new Intent(Intent.ACTION_SEND);
@@ -88,15 +89,5 @@ public class Fragment_FrontPage extends Fragment implements MyFragmentStatePager
         adp.notifyDataSetChanged();
         income.setText(String.format("%.2f",(Math.abs(Activity_ViewPage.category.getIncome()))));
         expense.setText(String.format("%.2f", (Activity_ViewPage.category.getExpense())));
-    }
-
-    @Override
-    public void onPauseFragment() {
-
-    }
-
-    @Override
-    public void onResumeFragment() {
-
     }
 }

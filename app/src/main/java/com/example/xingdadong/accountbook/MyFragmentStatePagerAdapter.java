@@ -13,13 +13,6 @@ public class MyFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.count=count;
     }
-    public interface FragmentLifecycle {
-
-        public void onPauseFragment();
-        public void onResumeFragment();
-
-    }
-
     @Override
     public Fragment getItem(int position) {
         switch (position){

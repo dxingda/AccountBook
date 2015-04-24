@@ -31,30 +31,6 @@ public class Activity_ViewPage extends ActionBarActivity {
                 page.setScaleY(normalized_position/2+0.5f);
             }
         });
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            int currentPosition = 0;
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                MyFragmentStatePagerAdapter.FragmentLifecycle fragmentToShow = (MyFragmentStatePagerAdapter.FragmentLifecycle)myPagerAdapter.getItem(position);
-                fragmentToShow.onResumeFragment();
-
-                MyFragmentStatePagerAdapter.FragmentLifecycle fragmentToHide = (MyFragmentStatePagerAdapter.FragmentLifecycle)myPagerAdapter.getItem(currentPosition);
-                fragmentToHide.onPauseFragment();
-
-                currentPosition = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
 }

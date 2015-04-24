@@ -37,31 +37,29 @@ public class FrontPageRecyclerAdapter extends RecyclerView.Adapter<FrontPageRecy
         public ImageView ic_type;
         public TextView type;
         public TextView amount;
-        public ImageView discard;
+        public ImageView like;
         public ImageView share;
+        public ImageView favorite;
         public ViewHolder(View v) {
             super(v);
             ic_type=(ImageView)v.findViewById(R.id.ic_type);
             type=(TextView)v.findViewById(R.id.type);
             amount=(TextView)v.findViewById(R.id.amount);
-            discard=(ImageView)v.findViewById(R.id.discard);
+            like=(ImageView)v.findViewById(R.id.like);
             share=(ImageView)v.findViewById(R.id.share);
+            favorite=(ImageView)v.findViewById(R.id.favorite);
             v.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v){
                     mItemClickListener.onItemClick(v,getPosition());
+
                 }
             });
-            discard.setOnClickListener(new View.OnClickListener() {
+            like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    float amount=(Float)(myDataSet.get(getPosition()).get("amount"));
-                    int pos=(Integer)myDataSet.get(getPosition()).get("type");
-                    Activity_ViewPage.category.update(Activity_ViewPage.category_file,pos,(-1)*amount);
-                    Fragment_FrontPage.expense.setText(String.format("%.2f",Activity_ViewPage.category.getExpense()));
-                    Fragment_FrontPage.income.setText(String.format("%.2f",(Math.abs(Activity_ViewPage.category.getIncome()))));
-                    myDataSet.remove(getPosition());
-                    Activity_ViewPage.data.writeToFile(Activity_ViewPage.filename);
-                    FrontPageRecyclerAdapter.this.notifyItemRemoved(getPosition());
+                    boolean prev=(Boolean)myDataSet.get(getPosition()).get("like");
+                    ((HashMap<String,Boolean>)(myDataSet.get(getPosition()))).put("like",!prev);
+                    FrontPageRecyclerAdapter.this.notifyDataSetChanged();
                 }
             });
             share.setOnClickListener(new View.OnClickListener() {
@@ -80,8 +78,13 @@ public class FrontPageRecyclerAdapter extends RecyclerView.Adapter<FrontPageRecy
             ic_type.setImageResource((Integer)(Activity_ViewPage.category.getItem(i).get("icon")));
             type.setText((String)(Activity_ViewPage.category.getItem(i).get("type")));
             amount.setText(String.format("%.2f",Math.abs((Float) data.get("amount"))));
-        }
+            if((Boolean)data.get("like")){
+                favorite.setVisibility(View.VISIBLE);
+            }else{
+                favorite.setVisibility(View.INVISIBLE);
 
+            }
+        }
     }
     public Object getItem(int position){
         return myDataSet.get(position);
@@ -114,13 +117,14 @@ public class FrontPageRecyclerAdapter extends RecyclerView.Adapter<FrontPageRecy
         holder .bindData(myDataSet.get(position));
         if (position == expandedPosition) {
             holder.share.setVisibility(View.VISIBLE);
-            holder.discard.setVisibility(View.VISIBLE);
+            holder.like.setVisibility(View.VISIBLE);
+            holder.favorite.setVisibility(View.GONE);
             holder.type.setVisibility(View.GONE);
             holder.amount.setVisibility(View.GONE);
 
         } else {
             holder.share.setVisibility(View.GONE);
-            holder.discard.setVisibility(View.GONE);
+            holder.like.setVisibility(View.GONE);
             holder.type.setVisibility(View.VISIBLE);
             holder.amount.setVisibility(View.VISIBLE);
         }
