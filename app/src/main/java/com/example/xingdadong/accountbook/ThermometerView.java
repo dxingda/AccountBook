@@ -28,6 +28,14 @@ public final class ThermometerView extends View {
 
     private static final String TAG = ThermometerView.class.getSimpleName();
 
+    private float handPosition = 0.0f;
+    private float handTarget = 0.0f;
+    private float handVelocity = 0.0f;
+    private float handAcceleration = 0.0f;
+    private long lastHandMoveTime = -1L;
+    private boolean handNeedsToMove = false;
+
+    private float degree = 0.0f, sweep=0.0f,startDegree=0.0f, endDegree=0.0f;
 
     private Handler handler;
 
@@ -64,15 +72,15 @@ public final class ThermometerView extends View {
     private float[] temp = {25.0f,65.0f,45.0f,15.0f,105.0f,70.0f,50.0f,125.0f,500.0f};
     private int[] array_color =
             {
-                    0x2FFF6347,//1
-                    0x2FFFA500,//2
-                    0x2FFFD700,//3
-                    0x2F9ACD32,//4
-                    0x2F90EE90,//5
-                    0x2F00FFFF,//6
-                    0x2F00CED1,//7
-                    0x2F6A5ACD,//8
-                    0x2F8A2BE2,//9
+                    0x0FFF6347,//1
+                    0x0FFFA500,//2
+                    0x0FFFD700,//3
+                    0x0F9ACD32,//4
+                    0x0F90EE90,//5
+                    0x0F00FFFF,//6
+                    0x0F00CED1,//7
+                    0x0F6A5ACD,//8
+                    0x0F8A2BE2,//9
             };
     private int[] array_color2 =
             {
@@ -104,6 +112,16 @@ public final class ThermometerView extends View {
         category[index] = n;
         invalidate();
 
+    }
+
+    public void setHandNeedsToMove()
+    {
+        handNeedsToMove = true;
+    }
+
+    public void clearStartDegree()
+    {
+        startDegree = endDegree;
     }
 
     int index;
@@ -345,21 +363,19 @@ public final class ThermometerView extends View {
     }
 
     private void drawSector(Canvas canvas){
-
-
-        float degree =0;
         degreesPerNick = 180.0f/total;
-
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         for(int i=0; i< index;i++)
         {
-            float sweep= (360*category[i]/total);
+            sweep= (360*category[i]/total);
             degree += sweep;
+           // endDegree = degree;
         }
-        canvas.rotate(-degree-180*category[index]/total,0.5f,0.5f);
-        System.out.println("index: "+index+ "   degree :"+(-degree-180*category[index]/total));
+        endDegree = degree+180*category[index]/total;
+        startDegree %= 360.0f;
+        endDegree %=360.0f;
+        canvas.rotate(-startDegree,0.5f,0.5f);
         degree=0;
-
         for(int i=0; i<8;i++) {
             sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
@@ -367,12 +383,44 @@ public final class ThermometerView extends View {
                     array_color[i],
                     array_color2[i],
                     Shader.TileMode.CLAMP));
-            float sweep= (360*category[i]/total);
+            sweep= (360*category[i]/total);
             canvas.drawArc(faceRect, degree-90,sweep, true, sectorPaint);
             degree += sweep;
         }
-        canvas.restore();
 
+        canvas.restore();
+    }
+
+
+
+    private void moveHand() {
+        if (! handNeedsToMove) {
+            return;
+        }
+
+        if (lastHandMoveTime != -1L) {
+            long currentTime = System.currentTimeMillis();
+            float delta = (currentTime - lastHandMoveTime) / 1000.0f;
+
+            handAcceleration = 2.0f * (endDegree - startDegree);
+
+            startDegree += handVelocity * delta;
+            handVelocity += handAcceleration * delta;
+            if (Math.abs(startDegree - endDegree) <2.0)
+            {
+                handVelocity = 0.0f;
+                handAcceleration = 0.0f;
+                lastHandMoveTime = -1L;
+                handNeedsToMove = false;
+            } else
+            {
+                lastHandMoveTime = System.currentTimeMillis();
+            }
+            invalidate();
+        } else {
+            lastHandMoveTime = System.currentTimeMillis();
+            moveHand();
+        }
     }
 
     private void drawBackground(Canvas canvas) {
@@ -419,7 +467,11 @@ public final class ThermometerView extends View {
         drawLogo(canvas);
         canvas.restore();
 
+        System.out.println("StartDegree: " +startDegree+" EndDegree: "+endDegree);
 
+        if (handNeedsToMove) {
+            moveHand();
+        }
 
     }
 

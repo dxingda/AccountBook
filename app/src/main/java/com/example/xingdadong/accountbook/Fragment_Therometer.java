@@ -103,7 +103,9 @@ public class Fragment_Therometer extends Fragment {
                         cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
                         amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
                         label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                        thermometer.clearStartDegree();
                         thermometer.setAngle(index);
+                        thermometer.setHandNeedsToMove();
 
                     }
                     index =(++index)%9;
