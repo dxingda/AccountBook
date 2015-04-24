@@ -10,7 +10,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/mybackground"
+            android:src="@drawable/jeans"
             android:scaleType="fitXY"
             android:id="@+id/banner"/>
         <RelativeLayout
