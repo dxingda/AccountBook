@@ -12,14 +12,15 @@ import android.view.View;
 public class Activity_ViewPage extends ActionBarActivity {
     public final static String filename = "/data/data/com.example.xingdadong.accountbook/files/data";
     public final static String category_file="/data/data/com.example.xingdadong.accountbook/files/category";
-    public static final Data data=new Data(filename);
+    public static Data data=new Data(filename);
     public static final Category category = new Category(category_file);
     ViewPager mViewPager;
-    public MyFragmentStatePagerAdapter myPagerAdapter;
+    MyFragmentStatePagerAdapter myPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page);
+        data.readFromFile(filename);
         myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),2);
         mViewPager=(ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(myPagerAdapter);
@@ -32,5 +33,29 @@ public class Activity_ViewPage extends ActionBarActivity {
             }
         });
     }
+    public class MyFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
+        int count;
+        public MyFragmentStatePagerAdapter(FragmentManager fm,int count) {
+            super(fm);
+            this.count=count;
+        }
 
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new Fragment_FrontPage();
+                case 1:
+                    return new Fragment_Therometer();
+                default:
+                    break;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return count;
+        }
+    }
 }

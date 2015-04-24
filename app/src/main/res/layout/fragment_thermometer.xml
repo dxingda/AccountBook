@@ -42,7 +42,7 @@
 
 
     <com.example.xingdadong.accountbook.ThermometerView
-        android:layout_height="335dp"
+        android:layout_height="340dp"
         android:layout_width="400dp"
         android:id="@+id/thermometer"
         android:layout_below="@+id/layout_lable"/>
