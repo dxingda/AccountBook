@@ -22,7 +22,7 @@ public class Fragment_FrontPage extends Fragment{
     public static TextView income;
     public static TextView expense;
     static View v;
-
+    private RecyclerView myRecyclerView;
     public Fragment_FrontPage() {
         // Required empty public constructor
     }
@@ -32,7 +32,7 @@ public class Fragment_FrontPage extends Fragment{
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_front_page, container, false);
 
-        RecyclerView myRecyclerView=(RecyclerView)rootView.findViewById(R.id.cardList);
+        myRecyclerView=(RecyclerView)rootView.findViewById(R.id.cardList);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         ImageButton btn=(ImageButton)rootView.findViewById(R.id.btn1);
@@ -73,6 +73,7 @@ public class Fragment_FrontPage extends Fragment{
                 startActivity(Intent.createChooser(intentShare, "How do you want to share?"));
             }
         });
+        myRecyclerView.scrollToPosition(Activity_ViewPage.data.getSize()-1);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,5 +90,6 @@ public class Fragment_FrontPage extends Fragment{
         adp.notifyDataSetChanged();
         income.setText(String.format("%.2f",(Math.abs(Activity_ViewPage.category.getIncome()))));
         expense.setText(String.format("%.2f", (Activity_ViewPage.category.getExpense())));
+        myRecyclerView.scrollToPosition(Activity_ViewPage.data.getSize()-1);
     }
 }

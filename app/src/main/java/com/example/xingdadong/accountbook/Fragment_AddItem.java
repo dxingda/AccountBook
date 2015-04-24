@@ -52,11 +52,11 @@ public class Fragment_AddItem extends Fragment {
                     amount=Float.valueOf(edittext.getText().toString());
                     // Perform action on key press
                     if(arr[0]==8){
-                        Activity_ViewPage.data.add(arr[0], System.currentTimeMillis()-1*24*3660*1000,(-1)* amount,false);
+                        Activity_ViewPage.data.add(arr[0], System.currentTimeMillis(),(-1)* amount,false);
                         Activity_ViewPage.category.update(Activity_ViewPage.category_file,arr[0],(-1)*amount);
 
                     }else {
-                        Activity_ViewPage.data.add(arr[0], System.currentTimeMillis()-1*24*3660*1000, amount,false);
+                        Activity_ViewPage.data.add(arr[0], System.currentTimeMillis(), amount,false);
                         Activity_ViewPage.category.update(Activity_ViewPage.category_file,arr[0],amount);
                     }
                     Activity_ViewPage.data.writeToFile(Activity_ViewPage.filename);
