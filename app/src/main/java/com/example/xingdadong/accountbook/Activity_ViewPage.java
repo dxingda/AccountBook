@@ -21,7 +21,7 @@ public class Activity_ViewPage extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page);
         data.readFromFile(filename);
-        myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),2);
+        myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),3);
         mViewPager=(ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(myPagerAdapter);
         mViewPager.setPageTransformer(false,new ViewPager.PageTransformer(){
@@ -47,6 +47,8 @@ public class Activity_ViewPage extends ActionBarActivity {
                     return new Fragment_FrontPage();
                 case 1:
                     return new Fragment_Therometer();
+                case 2:
+                    return new Fragment_Weekly();
                 default:
                     break;
             }
