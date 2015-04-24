@@ -50,11 +50,12 @@ public class Data {
             e.printStackTrace();
         }
     }
-    public void add(int type,long date,float amount){
+    public void add(int type,long date,float amount,boolean like){
         HashMap cost = new HashMap();
         cost.put("type",type);
         cost.put("date",date);
         cost.put("amount",amount);
+        cost.put("like",like);
         costList.add(cost);
     }
 }

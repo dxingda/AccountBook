@@ -11,13 +11,17 @@ import android.support.v4.app.Fragment;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.Date;
+import java.util.HashMap;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Fragment_FrontPage extends Fragment {
+public class Fragment_FrontPage extends Fragment{
     public static final FrontPageRecyclerAdapter adp=new FrontPageRecyclerAdapter(Activity_ViewPage.data.getCostList());
-    private TextView income;
-    private TextView expense;
+    public static TextView income;
+    public static TextView expense;
+    static View v;
 
     public Fragment_FrontPage() {
         // Required empty public constructor
@@ -38,9 +42,35 @@ public class Fragment_FrontPage extends Fragment {
         this.expense=expense;
         myRecyclerView.setAdapter(adp);
         adp.SetOnItemClickListener(new FrontPageRecyclerAdapter.OnItemClickListener() {
-            //@Override
+            @Override
             public void onItemClick(View view, int position) {
-
+                int prev=-1;
+                // Check for an expanded view, collapse if you find one
+                if (adp.expandedPosition >= 0) {
+                    prev = adp.expandedPosition;
+                    adp.notifyItemChanged(prev);
+                }
+                if(prev==position){
+                    adp.expandedPosition=-1;
+                    adp.notifyItemChanged(position);
+                }else {
+                    // Set the current position to "expanded"
+                    adp.expandedPosition = position;
+                    adp.notifyItemChanged(adp.expandedPosition);
+                }
+                v=view;
+            }
+            public void onShareClick(View view,int position){
+                Intent intentShare=new Intent(Intent.ACTION_SEND);
+                intentShare.setType("text/plain");
+                HashMap item=Activity_ViewPage.data.getItem(position);
+                int type=(Integer)item.get("type");
+                Date date=new Date((Long)item.get("date"));
+                HashMap category=Activity_ViewPage.category.getItem(type);
+                String s="On "+ date.toString()+", I spend $"+
+                        String.format("%.2f",item.get("amount"))+" on "+category.get("type").toString()+".";
+                intentShare.putExtra(Intent.EXTRA_TEXT,s);
+                startActivity(Intent.createChooser(intentShare, "How do you want to share?"));
             }
         });
         btn.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +85,9 @@ public class Fragment_FrontPage extends Fragment {
     }
     public void onResume(){
         super.onResume();
-        income.setText(Float.toString(Math.abs(Activity_ViewPage.category.getIncome())));
-        expense.setText(Float.toString(Activity_ViewPage.category.getExpense()));
+        adp.expandedPosition=-1;
+        adp.notifyDataSetChanged();
+        income.setText(String.format("%.2f",(Math.abs(Activity_ViewPage.category.getIncome()))));
+        expense.setText(String.format("%.2f", (Activity_ViewPage.category.getExpense())));
     }
 }
