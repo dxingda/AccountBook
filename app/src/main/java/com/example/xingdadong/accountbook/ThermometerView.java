@@ -406,7 +406,7 @@ public final class ThermometerView extends View {
 
             startDegree += handVelocity * delta;
             handVelocity += handAcceleration * delta;
-            if (Math.abs(startDegree - endDegree) <2.0)
+            if (Math.abs(startDegree - endDegree) <5.0)
             {
                 handVelocity = 0.0f;
                 handAcceleration = 0.0f;
