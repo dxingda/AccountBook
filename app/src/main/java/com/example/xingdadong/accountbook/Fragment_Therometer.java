@@ -12,7 +12,7 @@ import android.widget.Toast;
 /**
  * Created by kevin on 7/6/2014.
  */
-public class Fragment_Therometer extends Fragment {
+public class Fragment_Therometer extends Fragment implements MyFragmentStatePagerAdapter.FragmentLifecycle{
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -92,7 +92,6 @@ public class Fragment_Therometer extends Fragment {
                 {
                     int i;
                     index = index%9;
-                    System.out.println("index= "+index);
                     for(i=0;(i<Activity_ViewPage.category.getSize())&&
                             ((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
                             ;i++){
@@ -122,15 +121,25 @@ public class Fragment_Therometer extends Fragment {
         super.onResume();
         float in=Activity_ViewPage.category.getIncome();
         float out = Activity_ViewPage.category.getExpense();
-        income.setText(Float.toString(in*(-1)));
+        income.setText(Float.toString(Math.abs(in)));
         expense.setText(Float.toString(out));
         balance.setText(Float.toString(in+out));
+        System.out.println("on Resume called");
         for(int i = 0; i<9;i++)
         {
-            thermometer.setAmount(i, (float)Activity_ViewPage.category.getItem(i).get("amount"));
-            System.out.println("category="+i+" amount="+(float)Activity_ViewPage.category.getItem(i).get("amount"));
+            thermometer.setAmount(i, (float) Activity_ViewPage.category.getItem(i).get("amount"));
         }
 
         thermometer.setTotal(Activity_ViewPage.category.getExpense());
+    }
+
+    @Override
+    public void onPauseFragment() {
+
+    }
+
+    @Override
+    public void onResumeFragment() {
+
     }
 }

@@ -358,7 +358,6 @@ public final class ThermometerView extends View {
                     array_color2[i],
                     Shader.TileMode.CLAMP));
             float sweep= (360*category[i]/total);
-            System.out.println("sector: category: "+ category[i]+" total:"+total);
             canvas.drawArc(faceRect, degree-90,sweep, true, sectorPaint);
             degree += sweep;
         }

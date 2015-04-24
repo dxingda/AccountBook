@@ -12,15 +12,14 @@ import android.view.View;
 public class Activity_ViewPage extends ActionBarActivity {
     public final static String filename = "/data/data/com.example.xingdadong.accountbook/files/data";
     public final static String category_file="/data/data/com.example.xingdadong.accountbook/files/category";
-    public static Data data=new Data(filename);
+    public static final Data data=new Data(filename);
     public static final Category category = new Category(category_file);
     ViewPager mViewPager;
-    MyFragmentStatePagerAdapter myPagerAdapter;
+    public MyFragmentStatePagerAdapter myPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page);
-        data.readFromFile(filename);
         myPagerAdapter=new MyFragmentStatePagerAdapter(getSupportFragmentManager(),2);
         mViewPager=(ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(myPagerAdapter);
@@ -32,30 +31,30 @@ public class Activity_ViewPage extends ActionBarActivity {
                 page.setScaleY(normalized_position/2+0.5f);
             }
         });
-    }
-    public class MyFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
-        int count;
-        public MyFragmentStatePagerAdapter(FragmentManager fm,int count) {
-            super(fm);
-            this.count=count;
-        }
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            int currentPosition = 0;
 
-        @Override
-        public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-                    return new Fragment_FrontPage();
-                case 1:
-                    return new Fragment_Therometer();
-                default:
-                    break;
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
-            return null;
-        }
 
-        @Override
-        public int getCount() {
-            return count;
-        }
+            @Override
+            public void onPageSelected(int position) {
+                MyFragmentStatePagerAdapter.FragmentLifecycle fragmentToShow = (MyFragmentStatePagerAdapter.FragmentLifecycle)myPagerAdapter.getItem(position);
+                fragmentToShow.onResumeFragment();
+
+                MyFragmentStatePagerAdapter.FragmentLifecycle fragmentToHide = (MyFragmentStatePagerAdapter.FragmentLifecycle)myPagerAdapter.getItem(currentPosition);
+                fragmentToHide.onPauseFragment();
+
+                currentPosition = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
+
 }
