@@ -315,9 +315,10 @@ public final class ThermometerView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+       /*
         if (background != null) {
             background.recycle();
-        }
+        }*/
         background = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         Canvas backgroundCanvas = new Canvas(background);
         float scale = (float) getWidth();
