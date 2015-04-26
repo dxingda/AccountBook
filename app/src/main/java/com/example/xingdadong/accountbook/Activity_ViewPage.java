@@ -10,8 +10,8 @@ import android.view.View;
 
 
 public class Activity_ViewPage extends ActionBarActivity {
-    public final static String filename = "/data/data/com.example.xingdadong.accountbook/files/data";
-    public final static String category_file="/data/data/com.example.xingdadong.accountbook/files/category";
+    public final static String filename = "/data/data/com.example.xingdadong.accountbook/data";
+    public final static String category_file="/data/data/com.example.xingdadong.accountbook/category";
     public static Data data=new Data(filename);
     public static final Category category = new Category(category_file);
     ViewPager mViewPager;

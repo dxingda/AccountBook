@@ -5,14 +5,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by kevin on 7/6/2014.
- */
 public class Fragment_Therometer extends Fragment {
     /**
      * The fragment argument representing the section number for this
@@ -21,6 +17,8 @@ public class Fragment_Therometer extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     private int num = 0;
     private TextView income, expense, balance;
+    private TextView cate,amnt;
+    private ImageView label;
     private ThermometerView thermometer;
     private int index = 0;
 
@@ -49,9 +47,9 @@ public class Fragment_Therometer extends Fragment {
         income = (TextView)rootView.findViewById(R.id.textview_income_number);
         expense= (TextView)rootView.findViewById(R.id.textview_expense_number);
         balance=(TextView)rootView.findViewById(R.id.textview_balance_number);
-        final TextView cate = (TextView)rootView.findViewById(R.id.lable1);
-        final TextView amnt = (TextView)rootView.findViewById(R.id.lable2);
-        final ImageView label = (ImageView)rootView.findViewById(R.id.thero_icon);
+        cate = (TextView)rootView.findViewById(R.id.lable1);
+        amnt = (TextView)rootView.findViewById(R.id.lable2);
+        label = (ImageView)rootView.findViewById(R.id.thero_icon);
         int flag=0;
         index=0;
         if(Activity_ViewPage.data.getSize()==0){
