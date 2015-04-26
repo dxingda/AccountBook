@@ -287,7 +287,7 @@ public final class ThermometerView extends View {
         if (lastHandMoveTime != -1L) {
             long currentTime = System.currentTimeMillis();
             float delta = (currentTime - lastHandMoveTime) / 500.0f;
-            handAcceleration = 2.0f * (endDegree - startDegree);
+            handAcceleration = 30.0f;
             startDegree += handVelocity * delta;
             handVelocity += handAcceleration*delta;
             if (startDegree - endDegree >0.1f){

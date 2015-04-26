@@ -117,11 +117,9 @@ public class Fragment_Weekly extends Fragment {
 
                 chartView = (WeeklyChartView) rootView.findViewById(R.id.weeklyCanvas);
                 chartView.setDay(day1);
-                System.out.println(date.getTime());
             /////////////////////////////////////////////////////////////////////////////////////////////////////
                 int indexLength = Activity_ViewPage.data.getSize();
                 time = date.getTime();
-                //System.out.println(""+date);
                 int flag1=0;
                 start=0;
                 for (int i=0; i <indexLength; i++) {
@@ -146,7 +144,6 @@ public class Fragment_Weekly extends Fragment {
                 if(flag2==0) end++;
                 mRecyclerViewAdapter.start=start;
                 mRecyclerViewAdapter.end=end;
-                System.out.println("start: " +start+" end: "+end);
                 if (start==end) {Toast.makeText(getActivity(), "No Expense on the Selected Day", Toast.LENGTH_LONG).show();}
                 if (start>end) {Toast.makeText(getActivity(), "The Date Yet to Come", Toast.LENGTH_LONG).show();}
                 mRecyclerViewAdapter.notifyDataSetChanged();
@@ -155,10 +152,6 @@ public class Fragment_Weekly extends Fragment {
                 ////////////////////////////////////////////////////////////////////////////////////////////////
             }
         });
-
-        //Date d = new Date(time);
-        //System.out.println(""+d);
-
         calen = Calendar.getInstance();
 //////////////////////////////////////////////////////////////
         int ri = calen.get(Calendar.DATE);
@@ -186,11 +179,7 @@ public class Fragment_Weekly extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-        /////////////////////////////////////////////////////////////////////////////////
-
         time =  d.getTime();
-        System.out.println(""+d);
-
         int indexLength = Activity_ViewPage.data.getSize();
         int flag1=0;
         for (int i=0; i <indexLength; i++) {
@@ -218,7 +207,6 @@ public class Fragment_Weekly extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerViewAdapter = new RecyclerViewAdapter(Activity_ViewPage.data.getCostList(),start,end );
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        System.out.println("start: " +start+" end: "+end);
         return rootView;
     }
 }

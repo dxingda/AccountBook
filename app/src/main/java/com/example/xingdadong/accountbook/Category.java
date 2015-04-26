@@ -1,5 +1,7 @@
 package com.example.xingdadong.accountbook;
 
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -24,7 +26,7 @@ public class Category {
             inputStream.close();
         } catch (Exception e) {
             createCategory();
-            System.out.println("file not exist, creating new category file");
+            Log.d("CategoryFileException","file not exist, creating new category file");
         }
     }
     public int getSize(){

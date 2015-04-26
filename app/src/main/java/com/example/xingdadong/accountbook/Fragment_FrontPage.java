@@ -1,5 +1,6 @@
 package com.example.xingdadong.accountbook;
 
+import android.animation.AnimatorInflater;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.animation.AnimatorSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.Date;
@@ -85,7 +87,6 @@ public class Fragment_FrontPage extends Fragment{
     }
     public void onResume(){
         super.onResume();
-
         income.setText(String.format("%.2f",(Math.abs(Activity_ViewPage.category.getIncome()))));
         expense.setText(String.format("%.2f", (Activity_ViewPage.category.getExpense())));
         myRecyclerView.scrollToPosition(Activity_ViewPage.data.getSize()-1);
