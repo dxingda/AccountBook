@@ -283,11 +283,10 @@ public final class ThermometerView extends View {
         if (! handNeedsToMove) {
             return;
         }
-
         if (lastHandMoveTime != -1L) {
             long currentTime = System.currentTimeMillis();
             float delta = (currentTime - lastHandMoveTime) / 500.0f;
-            handAcceleration = 30.0f;
+            handAcceleration = 50;
             startDegree += handVelocity * delta;
             handVelocity += handAcceleration*delta;
             if (startDegree - endDegree >0.1f){
@@ -315,10 +314,6 @@ public final class ThermometerView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-       /*
-        if (background != null) {
-            background.recycle();
-        }*/
         background = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         Canvas backgroundCanvas = new Canvas(background);
         float scale = (float) getWidth();

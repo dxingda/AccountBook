@@ -1,7 +1,5 @@
 package com.example.xingdadong.accountbook;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -14,17 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.CycleInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.PathInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.AbsoluteLayout;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;

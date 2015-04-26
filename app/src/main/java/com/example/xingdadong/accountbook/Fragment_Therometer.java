@@ -23,6 +23,9 @@ public class Fragment_Therometer extends Fragment {
     private ImageView label;
     private ThermometerView thermometer;
     private int index = 0;
+
+
+
     /**
      * Returns a new instance of this fragment for the given section
      * number.
@@ -54,8 +57,7 @@ public class Fragment_Therometer extends Fragment {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               int n = thermometer.getCurrentPosition();
-                thermometer.setCurrentPosition(((n+1)>8)? 0 : n+1);
+              // int n = thermometer.getCurrentPosition();
                 if(Activity_ViewPage.data.getSize()==0){
                     cate.setText("category");
                     amnt.setText("0.0");
@@ -73,11 +75,18 @@ public class Fragment_Therometer extends Fragment {
                         cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
                         amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
                         label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                        thermometer.setCurrentPosition(index);
                         thermometer.clearStartDegree();
                         thermometer.setAngle(index);
                         thermometer.setHandNeedsToMove();
                     }
                     index = (++index)%9;
+
+                    //thermometer.setAngle(thermometer.getAngle() + 1);
+                    //thermometer.animate().setDuration(100);
+                    //thermometer.animate().rotation(-10.f * num++);
+
+                    //thermometer.startAnimation( AnimationUtils.loadAnimation(getActivity(), R.anim.ani_rotation));
                 }
             }
         });
@@ -118,6 +127,9 @@ public class Fragment_Therometer extends Fragment {
                 cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
                 amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
                 label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                thermometer.setStartDegree(180*(Float)(Activity_ViewPage.category.getItem(index).get("amount"))/
+                        Activity_ViewPage.category.getExpense());
+
                 index++;
             }
         }
