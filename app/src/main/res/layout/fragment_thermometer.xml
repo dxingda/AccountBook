@@ -47,7 +47,16 @@
             android:text="0.00"
             />
     </LinearLayout>
+
     </RelativeLayout>
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:scaleType="fitXY"
+        android:id="@+id/arrow3"
+        android:src="@drawable/arrow_3"
+        android:layout_below="@+id/layout_lable"
+        android:layout_centerHorizontal="true"/>
 
 
     <com.example.xingdadong.accountbook.ThermometerView

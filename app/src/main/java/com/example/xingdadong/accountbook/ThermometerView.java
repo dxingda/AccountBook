@@ -81,12 +81,17 @@ public final class ThermometerView extends View {
     {
         return  currentPosition;
     }
+
     public void setCurrentPosition(int n)
     {
-        currentPosition = n;
+        currentPosition =n;
         invalidate();
     }
 
+    public void setStartDegree(float n)
+    {
+        startDegree = n;
+    }
     public void setAmount(int index, float n)
     {
         category[index] = n;
@@ -188,7 +193,7 @@ public final class ThermometerView extends View {
         //logo paint
         logoPaint = new Paint();
         logoPaint.setFilterBitmap(true);
-        logo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.w_logo2);
+        logo = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.w_logo);
         logoMatrix = new Matrix();
         logoScale = (1.0f / logo.getWidth()) * 0.3f;
         logoMatrix.setScale(logoScale, logoScale);
@@ -221,25 +226,12 @@ public final class ThermometerView extends View {
         canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.translate(0.5f - logo.getWidth() * logoScale / 2.0f,
                 0.5f - logo.getHeight() * logoScale / 2.0f);
-        int color = 0x00000000;
+        int color = 0x808080;
         int position = getCurrentPosition();
         float number = category[position]/total;
-        if (number < 0.05) {
-            color = 0xFFADFF2F;
-        }
-        else if (number <0.15){
-            color = 0xFFCAFF70;
-        }
-        else if (number <0.3){
-           color = 0xFFBCEE68;
-       }
-        else if (number <0.5){
-            color = 0xFFA2CD5A;
-        }
-        else {
-            color =0xFF6E8B3D;
-        }
-        LightingColorFilter logoFilter = new LightingColorFilter(0xff338822, color);
+        number*=10;
+        color = color>>(int)number;
+        LightingColorFilter logoFilter = new LightingColorFilter(0xff0B0B0B, color);
         logoPaint.setColorFilter(logoFilter);
 
         canvas.drawBitmap(logo, logoMatrix, logoPaint);
@@ -264,6 +256,7 @@ public final class ThermometerView extends View {
         endDegree = degree+180*category[index]/total;
         startDegree %= 360.0f;
         endDegree %=360.0f;
+        if(endDegree<startDegree) endDegree+=360.0f;
         int m=0;
         for (float x: category)
         {
@@ -293,11 +286,11 @@ public final class ThermometerView extends View {
 
         if (lastHandMoveTime != -1L) {
             long currentTime = System.currentTimeMillis();
-            float delta = (currentTime - lastHandMoveTime) / 1000.0f;
+            float delta = (currentTime - lastHandMoveTime) / 500.0f;
             handAcceleration = 2.0f * (endDegree - startDegree);
             startDegree += handVelocity * delta;
-            handVelocity += handAcceleration * delta;
-            if (Math.abs(startDegree - endDegree) <5.0){
+            handVelocity += handAcceleration*delta;
+            if (startDegree - endDegree >0.1f){
                 handVelocity = 0.0f;
                 handAcceleration = 0.0f;
                 lastHandMoveTime = -1L;
