@@ -69,8 +69,6 @@ public class FrontPageRecyclerAdapter extends RecyclerView.Adapter<FrontPageRecy
                     mItemClickListener.onShareClick(v,getPosition());
                 }
             });
-
-
         }
 
         public void bindData(Map<String,?> data){
@@ -82,7 +80,6 @@ public class FrontPageRecyclerAdapter extends RecyclerView.Adapter<FrontPageRecy
                 favorite.setVisibility(View.VISIBLE);
             }else{
                 favorite.setVisibility(View.INVISIBLE);
-
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.xingdadong.accountbook;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -374,7 +375,15 @@ public final class ThermometerView extends View {
         endDegree = degree+180*category[index]/total;
         startDegree %= 360.0f;
         endDegree %=360.0f;
-        canvas.rotate(-startDegree,0.5f,0.5f);
+        int m=0;
+        for (float x: category)
+        {
+            if(x!=0.0f) m++;
+
+        }
+        if (m>1) {
+            canvas.rotate(-startDegree, 0.5f, 0.5f);
+        }
         degree=0;
         for(int i=0; i<8;i++) {
             sectorPaint.setFlags(Paint.ANTI_ALIAS_FLAG);

@@ -50,52 +50,25 @@ public class Fragment_Therometer extends Fragment {
         cate = (TextView)rootView.findViewById(R.id.lable1);
         amnt = (TextView)rootView.findViewById(R.id.lable2);
         label = (ImageView)rootView.findViewById(R.id.thero_icon);
-        int flag=0;
-        index=0;
-        if(Activity_ViewPage.data.getSize()==0){
-            cate.setText("category");
-            amnt.setText("0.0");
-        }else{
-            while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
-            {
-                ++index;
-
-                if(index>Activity_ViewPage.category.getSize()-1){
-                    flag=1;
-                    break;
-                }
-            }
-            if(flag==0) {
-                cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
-                amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
-                label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
-                index++;
-            }
-        }
-
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.piechart_button);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                int n = thermometer.getCurrentPosition();
-
                 thermometer.setCurrentPosition(((n+1)>8)? 0 : n+1);
-
-
                 if(Activity_ViewPage.data.getSize()==0){
                     cate.setText("category");
                     amnt.setText("0.0");
                     Toast.makeText(getActivity(),"No data entry!",Toast.LENGTH_SHORT).show();
-                }else
-                {
+                }else{
                     int i;
-                    index = index%9;
+                    index %= 9;
                     for(i=0;(i<Activity_ViewPage.category.getSize())&&
                             ((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
                             ;i++){
                         index++;
-                        index%=(float)Activity_ViewPage.category.getSize();
+                        index %= (float)Activity_ViewPage.category.getSize();
                     }
                     if(i<(float)Activity_ViewPage.category.getSize()) {
                         cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
@@ -104,9 +77,8 @@ public class Fragment_Therometer extends Fragment {
                         thermometer.clearStartDegree();
                         thermometer.setAngle(index);
                         thermometer.setHandNeedsToMove();
-
                     }
-                    index =(++index)%9;
+                    index = (++index)%9;
 
                     //thermometer.setAngle(thermometer.getAngle() + 1);
                     //thermometer.animate().setDuration(100);
@@ -133,7 +105,28 @@ public class Fragment_Therometer extends Fragment {
         {
             thermometer.setAmount(i, (float)Activity_ViewPage.category.getItem(i).get("amount"));
         }
-
         thermometer.setTotal(Activity_ViewPage.category.getExpense());
+        int flag=0;
+        index=0;
+        if(Activity_ViewPage.data.getSize()==0){
+            cate.setText("category");
+            amnt.setText("0.0");
+        }else{
+            while((float)Activity_ViewPage.category.getItem(index).get("amount")<=0)
+            {
+                ++index;
+
+                if(index>Activity_ViewPage.category.getSize()-1){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0) {
+                cate.setText(Activity_ViewPage.category.getItem(index).get("type").toString());
+                amnt.setText(Activity_ViewPage.category.getItem(index).get("amount").toString());
+                label.setImageResource((int) Activity_ViewPage.category.getItem(index).get("icon"));
+                index++;
+            }
+        }
     }
 }

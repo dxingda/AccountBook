@@ -2,6 +2,7 @@ package com.example.xingdadong.accountbook;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,30 +35,34 @@ public class Fragment_FrontPage extends Fragment{
 
         myRecyclerView=(RecyclerView)rootView.findViewById(R.id.cardList);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         ImageButton btn=(ImageButton)rootView.findViewById(R.id.btn1);
         final TextView income=(TextView)rootView.findViewById(R.id.income);
         final TextView expense=(TextView)rootView.findViewById(R.id.expense);
         this.income=income;
         this.expense=expense;
         myRecyclerView.setAdapter(adp);
+        myRecyclerView.scrollToPosition(Activity_ViewPage.data.getSize()-1);
         adp.SetOnItemClickListener(new FrontPageRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 int prev=-1;
                 // Check for an expanded view, collapse if you find one
-                if (adp.expandedPosition >= 0) {
-                    prev = adp.expandedPosition;
-                    adp.notifyItemChanged(prev);
-                }
+                prev = adp.expandedPosition;
+                view.findViewById(R.id.share).animate().setDuration(500).translationXBy(250);
+                view.findViewById(R.id.like).animate().setDuration(500).translationXBy(-250);
                 if(prev==position){
                     adp.expandedPosition=-1;
-                    adp.notifyItemChanged(position);
                 }else {
                     // Set the current position to "expanded"
                     adp.expandedPosition = position;
-                    adp.notifyItemChanged(adp.expandedPosition);
                 }
+                if(prev==-1){
+                }else{
+                    v.findViewById(R.id.share).animate().setDuration(500).translationXBy(-250);
+                    v.findViewById(R.id.like).animate().setDuration(500).translationXBy(250);
+                }
+                adp.notifyItemChanged(position);
+                adp.notifyItemChanged(prev);
                 v=view;
             }
             public void onShareClick(View view,int position){
@@ -73,7 +78,6 @@ public class Fragment_FrontPage extends Fragment{
                 startActivity(Intent.createChooser(intentShare, "How do you want to share?"));
             }
         });
-        myRecyclerView.scrollToPosition(Activity_ViewPage.data.getSize()-1);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,8 +90,7 @@ public class Fragment_FrontPage extends Fragment{
     }
     public void onResume(){
         super.onResume();
-        adp.expandedPosition=-1;
-        adp.notifyDataSetChanged();
+
         income.setText(String.format("%.2f",(Math.abs(Activity_ViewPage.category.getIncome()))));
         expense.setText(String.format("%.2f", (Activity_ViewPage.category.getExpense())));
         myRecyclerView.scrollToPosition(Activity_ViewPage.data.getSize()-1);

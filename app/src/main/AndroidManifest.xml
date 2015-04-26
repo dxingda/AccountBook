@@ -21,5 +21,4 @@
             android:label="@string/title_activity_activity__add_item" >
         </activity>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>
