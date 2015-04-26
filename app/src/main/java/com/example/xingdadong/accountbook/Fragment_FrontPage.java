@@ -1,6 +1,5 @@
 package com.example.xingdadong.accountbook;
 
-import android.animation.AnimatorInflater;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
-import android.animation.AnimatorSet;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.Date;
